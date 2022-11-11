@@ -6,13 +6,27 @@ const showDetails=()=>{
     alert("sahh")
     // setDetails(!details)
 }
+const regEx = '^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$'
 
 interface Fields{
   placeholder:string;
   type:string;
   label:string;
   required:boolean;
-
+  name?:string;
+  min?:number;
+  maxN?:number;
+  message?:string;
+  regexEmail?:string;
+  pattern?:any
+  mailVal?:any
+}
+interface AddInfo{
+  placeholder:string;
+  type:string;
+  label:string;
+  required:boolean;
+  name:string;
 }
 
 interface SelectionList{
@@ -23,6 +37,7 @@ interface SelectionList{
   label:string;
   name:string;
   options:string[];
+  required?:boolean;
 } 
 
 export const fields:Fields[] = [
@@ -30,31 +45,42 @@ export const fields:Fields[] = [
       placeholder:"Attach Resume/CV",
       type:"file",
       label:"RESUME/CV",
-      required:true
+      required:true,
+      // maxLen : 5
   },
   {
     placeholder: "Full Name",
     type: "text",
     label: "Full Name",
-    required: false,
+    required: true,
+    min:11,
+    message:"it require more than 10 letters"
   },
   {
     placeholder: "Email",
-    type: "text",
+    type: "email",
     label: "Email",
-    required: false,
+    required: true,
+    // maxLen : 5
+    mailVal:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   },
   {
     placeholder: "Phone",
     type: "number",
     label: "Phone",
     required: false,
+    maxN:10,
+    
+    
+    // maxLen : 5
   },
   {
     placeholder: "Company Name",
     type: "text",
     label: "Current Company",
-    required: false,
+    required: true,
+
+    // maxLen : 5
   },
 ];
 
@@ -64,47 +90,60 @@ export const linksField:Fields[] = [
     type: "text",
     label: "LinkedIn URL",
     required: false,
+    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    // maxLen : 5
   },
   {
     placeholder: "twitter URL",
     type: "text",
     label: "Twitter URL",
     required: false,
+    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    // maxLen : 5
   },
   {
     placeholder: "GitHub URL",
     type: "text",
     label: "GitHub URL",
     required: false,
+    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    // maxLen : 5
   },
   {
     placeholder: "Portfolio URL",
     type: "text",
     label: "Portfolio URL",
+    
     required: false,
+    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    // maxLen : 5
   },
   {
     placeholder: "Website link",
     type: "text",
     label: "Other Website",
     required: false,
+    pattern:/^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/
+    // maxLen : 5
   },
 ];
 
-export const pronouns :Fields[]= [
+export const pronouns :AddInfo[]= [
   {
     placeholder: "Type your response",
     type: "text",
     label: "If you'd like, please share your pronouns with us.",
     required: false,
+    name: "pronouns"
   },
 ];
 
-export const addInfo:Fields[] = [
+export const addInfo:AddInfo[] = [
   {
     placeholder: "Add a cover letter or anything else you want to sahre",
     type: "text",
-    label: "",
+    label: "Cover Letter",
+    name: "additional info",
     required: false,
   },
 ];
@@ -114,6 +153,7 @@ export const selectionList:SelectionList[] = [
     name: "gender",
     label: "Gender",
     options: ["Select...", "Male", "Female", "Other"],
+    required: true
   },
   { 
     name: "race",

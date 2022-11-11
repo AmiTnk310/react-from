@@ -55,10 +55,18 @@
 .field-input-box{
     width: 70%;
     height: 80%;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: start;
+    flex-direction: column;
     /* background-color: aquamarine; */
+}
+.field-input-box p{
+    
+    height: 10px;
+    color: red;
+    font-size: 12px;
+
 }
 .text-box{
     width: 100%;
@@ -169,6 +177,9 @@
     position: absolute;
     left: 0px;
     cursor: pointer;
+}
+.required{
+    color: red;
 }
 
 

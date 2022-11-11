@@ -2,8 +2,15 @@ import React from "react";
 import "./Selection.css";
 import { selectionList } from "../../Details";
 import { useState } from "react";
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
-const Selection = () => {
+interface IProps{
+  register:UseFormRegister<FieldValues>
+}
+
+const Selection = ({register}:IProps) => {
+  
+
   const [details, setDetails] = useState(false);
   const showDetails = () => {
     // alert("sahh")
@@ -33,55 +40,55 @@ const Selection = () => {
               no effect on your opportunity for employment.
             </div>
             <div id="selection-form">
-             
-              {selectionList.map((item, pos) => {
-                return (
-                  <>
-                    <div className="selectMenu">
-                      <div
-                        className="select-label"
-                        onClick={item.name === "race" ? showDetails : () => {}}
-                      >
-                        {item.label}
+              {/* <form onSubmit={handleSubmit((data) => console.log(data))}> */}
+                {selectionList.map((item, pos) => {
+                  return (
+                    <>
+                      <div className="selectMenu">
+                        <div
+                          className="select-label"
+                          onClick={
+                            item.name === "race" ? showDetails : () => {}
+                          }
+                        >
+                          {item.label}
+                        </div>
+                        <div className="select-option">
+                          <select 
+                            {...register(item.label)}
+                            name={item.name} id="">
+                            {item.options.map((items ,s) => {
+                              return <option>{items}</option>;
+                            })}
+                          </select>
+                        </div>
                       </div>
-                      <div className="select-option">
-                        <select name={item.name} id="">
-                          {item.options.map((items) => {
-                            return <option value="select">{items}</option>;
-                          })}
-                        </select>
-                      </div>
-                    </div>
 
-                    {details &&
-                      item.heading?.map((item, pos) => {
-                        return (
-                          <div className="hiding-text">
-                            <div className="info-text-heading">{item.head}</div>
-                            <div className="info-text-body">{item.text}</div>
-                          </div>
-                        );
-                      })}
-                  </>
-                );
-              })}
-
-             
+                      {details &&
+                        item.heading?.map((item, pos) => {
+                          return (
+                            <div className="hiding-text">
+                              <div className="info-text-heading">
+                                {item.head}
+                              </div>
+                              <div className="info-text-body">{item.text}</div>
+                            </div>
+                          );
+                        })}
+                    </>
+                  );
+                })}
+                <div className="submit-btn">
+            <button type="submit">SUBMIT APPLICATION</button>
+          </div>
+              {/* </form> */}
             </div>
-           
           </div>
-          <div className="captcha">
-
-          </div>
-          <div className="submit-btn">
-            <button>SUBMIT APPLICATION</button>
-          </div>
+          <div className="captcha"></div>
+          
         </div>
-        
       </div>
-      
     </div>
-    
   );
 };
 export default Selection;

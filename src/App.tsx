@@ -10,7 +10,7 @@ function App() {
 
         <Header/>
         <Name/>
-        <Selection/>
+        {/* <Selection/> */}
         <Footer/>
     </div>
   );
