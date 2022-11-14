@@ -2,21 +2,29 @@ import React from "react";
 import "./Selection.css";
 import { selectionList } from "../../Details";
 import { useState } from "react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldValues, useForm, UseFormRegister } from "react-hook-form";
+import { urlToHttpOptions } from "url";
+import { validateHeaderValue } from "http";
 
-interface IProps{
-  register:UseFormRegister<FieldValues>
+interface IProps {
+  register: UseFormRegister<FieldValues>;
 }
 
-const Selection = ({register}:IProps) => {
-  
 
+const Selection = ({ register }: IProps) => { 
+  // const {handleSubmit, formState:{errors}} = useForm();
+  
+    // console.log("selectionErrors", errors);
+  
   const [details, setDetails] = useState(false);
   const showDetails = () => {
     // alert("sahh")
     setDetails(!details);
   };
 
+
+  
+ 
   return (
     <div>
       <div className="container-selection">
@@ -41,51 +49,52 @@ const Selection = ({register}:IProps) => {
             </div>
             <div id="selection-form">
               {/* <form onSubmit={handleSubmit((data) => console.log(data))}> */}
-                {selectionList.map((item, pos) => {
-                  return (
-                    <>
-                      <div className="selectMenu">
-                        <div
-                          className="select-label"
-                          onClick={
-                            item.name === "race" ? showDetails : () => {}
-                          }
-                        >
-                          {item.label}
-                        </div>
-                        <div className="select-option">
-                          <select 
-                            {...register(item.label)}
-                            name={item.name} id="">
-                            {item.options.map((items ,s) => {
-                              return <option>{items}</option>;
-                            })}
-                          </select>
-                        </div>
+              {selectionList.map((item, pos) => {
+                return (
+                  <>
+                    <div className="selectMenu">
+                      <div
+                        className="select-label"
+                        onClick={item.name === "race" ? showDetails : () => {}}
+                      >
+                        {item.label}
                       </div>
+                      <div className="select-option">
+                        <select  
+                          
+                          required
+                          name={item.name}
+                            // onChange={(e) =>}
+                        >
+                          
+                          {item.options.map((items,pos) => {
+                            return <option {...register(item.label)} key={pos} value={items}>{items}</option>;
+                          })}
+                        </select>
+                        {/* {errors[item.label] && <p>{errors[item.label]?.message}</p>} */}
+                        
+                      </div>
+                    </div>
 
-                      {details &&
-                        item.heading?.map((item, pos) => {
-                          return (
-                            <div className="hiding-text">
-                              <div className="info-text-heading">
-                                {item.head}
-                              </div>
-                              <div className="info-text-body">{item.text}</div>
-                            </div>
-                          );
-                        })}
-                    </>
-                  );
-                })}
-                <div className="submit-btn">
-            <button type="submit">SUBMIT APPLICATION</button>
-          </div>
+                    {details &&
+                      item.heading?.map((item, pos) => {
+                        return (
+                          <div className="hiding-text">
+                            <div className="info-text-heading">{item.head}</div>
+                            <div className="info-text-body">{item.text}</div>
+                          </div>
+                        );
+                      })}
+                  </>
+                );
+              })}
+              <div className="submit-btn">
+                <button type="submit">SUBMIT APPLICATION</button>
+              </div>
               {/* </form> */}
             </div>
           </div>
           <div className="captcha"></div>
-          
         </div>
       </div>
     </div>

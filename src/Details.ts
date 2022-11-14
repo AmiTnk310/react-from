@@ -1,60 +1,61 @@
-
-// import { useState } from "react";
-
 // const [details,setDetails]=useState(false);
-const showDetails=()=>{
-    alert("sahh")
-    // setDetails(!details)
-}
-const regEx = '^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$'
+const showDetails = () => {
+  alert("sahh");
+  // setDetails(!details)
+};
+const regEx = "^[a-z0-9._%+-]+@[a-z0-9-]+.[a-z]{2,4}$";
 
-interface Fields{
-  placeholder:string;
-  type:string;
-  label:string;
-  required:boolean;
-  name?:string;
-  min?:number;
-  maxN?:number;
-  message?:string;
-  regexEmail?:string;
-  pattern?:any
-  mailVal?:any
+interface Fields {
+  placeholder: string;
+  type: string;
+  label: string;
+  required: boolean;
+  name?: string;
+  min?: number;
+  numVal?: any;
+  message?: string;
+  regexEmail?: string;
+  pattern?: any;
+  regExVal?: any;
+  maxFileSize?: number;
 }
-interface AddInfo{
-  placeholder:string;
-  type:string;
-  label:string;
-  required:boolean;
-  name:string;
+interface AddInfo {
+  placeholder: string;
+  type: string;
+  label: string;
+  required: boolean;
+  name: string;
 }
 
-interface SelectionList{
-  heading?:{
-              head:string;
-              text:String
-            }[];
-  label:string;
-  name:string;
-  options:string[];
-  required?:boolean;
-} 
+interface SelectionList {
+  heading?: {
+    head: string;
+    text: String;
+  }[];
+  label: string;
+  name: string;
+  options: string[];
+  required?: boolean;
+}
 
-export const fields:Fields[] = [
-  {
-      placeholder:"Attach Resume/CV",
-      type:"file",
-      label:"RESUME/CV",
-      required:true,
-      // maxLen : 5
-  },
+export const fields: Fields[] = [
+  // {
+  //   placeholder: "Attach Resume/CV",
+  //   type: "file",
+  //   label: "RESUME/CV",
+  //   required: true,
+  //   maxFileSize: 5000000,
+  //   message: "Files should be less than 5Mb",
+
+  //   // maxLen : 5
+  // },
   {
     placeholder: "Full Name",
     type: "text",
     label: "Full Name",
     required: true,
-    min:11,
-    message:"it require more than 10 letters"
+    min: 11,
+    message: "it require more than 10 letters",
   },
   {
     placeholder: "Email",
@@ -62,16 +63,17 @@ export const fields:Fields[] = [
     label: "Email",
     required: true,
     // maxLen : 5
-    mailVal:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    regExVal: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+    message: "Invalid Email",
   },
   {
     placeholder: "Phone",
     type: "number",
     label: "Phone",
-    required: false,
-    maxN:10,
-    
-    
+    required: true,
+    regExVal: /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/,
+    message: "Invalid Number",
+
     // maxLen : 5
   },
   {
@@ -84,13 +86,14 @@ export const fields:Fields[] = [
   },
 ];
 
-export const linksField:Fields[] = [
+export const linksField: Fields[] = [
   {
     placeholder: "LinkedIn URL",
     type: "text",
     label: "LinkedIn URL",
     required: false,
-    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    pattern:
+      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
     // maxLen : 5
   },
   {
@@ -98,7 +101,8 @@ export const linksField:Fields[] = [
     type: "text",
     label: "Twitter URL",
     required: false,
-    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    pattern:
+      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
     // maxLen : 5
   },
   {
@@ -106,16 +110,18 @@ export const linksField:Fields[] = [
     type: "text",
     label: "GitHub URL",
     required: false,
-    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    pattern:
+      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
     // maxLen : 5
   },
   {
     placeholder: "Portfolio URL",
     type: "text",
     label: "Portfolio URL",
-    
+
     required: false,
-    pattern:/^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    pattern:
+      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
     // maxLen : 5
   },
   {
@@ -123,22 +129,22 @@ export const linksField:Fields[] = [
     type: "text",
     label: "Other Website",
     required: false,
-    pattern:/^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/
+    pattern: /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/,
     // maxLen : 5
   },
 ];
 
-export const pronouns :AddInfo[]= [
+export const pronouns: AddInfo[] = [
   {
     placeholder: "Type your response",
     type: "text",
     label: "If you'd like, please share your pronouns with us.",
     required: false,
-    name: "pronouns"
+    name: "pronouns",
   },
 ];
 
-export const addInfo:AddInfo[] = [
+export const addInfo: AddInfo[] = [
   {
     placeholder: "Add a cover letter or anything else you want to sahre",
     type: "text",
@@ -148,14 +154,14 @@ export const addInfo:AddInfo[] = [
   },
 ];
 
-export const selectionList:SelectionList[] = [
+export const selectionList: SelectionList[] = [
   {
     name: "gender",
     label: "Gender",
     options: ["Select...", "Male", "Female", "Other"],
-    required: true
+    required: true,
   },
-  { 
+  {
     name: "race",
     heading: [
       {
@@ -187,7 +193,7 @@ export const selectionList:SelectionList[] = [
         text: "All persons who identify with more than one of the above five races.",
       },
     ],
-    
+
     label: "Race",
     // onclick:{showDetails},
 
@@ -195,7 +201,6 @@ export const selectionList:SelectionList[] = [
   },
   {
     name: "status",
-    
 
     label: "Veteran Status",
     options: [
