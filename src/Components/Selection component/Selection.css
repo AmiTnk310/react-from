@@ -12,7 +12,7 @@
 
 }
 .sub-container-selection{
-    width: 55%;
+    width: 100%;
     height: auto;
     border-top: 3px solid rgb(228,229,231);
     /* background-color: red; */
@@ -63,42 +63,55 @@
 }
 .selectMenu{
     width: 100%;
-    height: 6vh;
+    height: 8vh;
     /* background-color: rgb(46, 22, 22); */
     display: flex;
     
     justify-content: space-between;
-    align-items: center;
-    justify-content: start;
+    align-items: end;
+    /* justify-content: end; */
+
     
     
 }
 .select-label{
     width: 20%;
-    height: 100%;
+    height: 8vh;
     /* background-color: red; */
     display: flex;
     align-items: center;
+    justify-content: start;
     font-size: 1.15rem;
     font-weight: 500;
 }
 
 .select-option{
     width: 70%;
-    height: 60%;
+    height: 6vh;
     /* background-color: blue; */
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
+    /* align-items: center; */
+    /* justify-content: top; */
      
 }
 .select-option select{
     width: 100%;
-    height: 100%;
+    height: 4vh;
     font-size: 1.15rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(226,226,226);
+   
+}
+ .select-option p{
+    color: red;
+    text-align: start;
+    margin: 0;
+    font-size: 12px;
+    /* height: 10px; */
+    /* width: 10px; */
 }
 
 
@@ -203,10 +216,19 @@
         height: 40%;
         /* background-color: blue; */
         display: flex;
-        align-items: center;
+        align-items: start;
         flex-direction: column;
          
     }
+    .select-option p{
+        color: red;
+        text-align: start;
+        /* margin: 0; */
+        font-size: 0.8rem;
+        /* height: 10px; */
+        /* width: 10px; */
+    }
+    
     .hiding-text{
 
         /* background-color: darkblue; */

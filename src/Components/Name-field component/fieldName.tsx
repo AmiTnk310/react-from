@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import "./Name-field.css";
+
 import { fields } from "../../Details";
 import { linksField } from "../../Details";
 import { pronouns } from "../../Details";
@@ -9,15 +10,21 @@ import { addInfo } from "../../Details";
 import Selection from "../Selection component/Selection";
 import { kMaxLength } from "buffer";
 import { collection, addDoc, getDocs } from "firebase/firestore";
-import {db} from '../../firebase';
+import { db } from "../../firebase";
 const Name = () => {
   const [resumeErr, setResumeErr] = useState("");
+  const [resumeLabel, setResumeLabel] = useState("Attach RESUME/CV");
 
-  const resChange = (e:any) => {
-    if (e.target.files[0].size > 5000000) {
+  const resChange = (e: any) => {
+     if (e.currentTarget.files && e.currentTarget.files[0]){
+      setResumeLabel(e.currentTarget.files[0].name)}
+     if (e.target.files[0].size > 5000000) {
       setResumeErr("File size should be less than 5Mb");
-    } else if (e.target.files[0].type !== "application/pdf")
+    }
+     else if (e.target.files[0].type !== "application/pdf"){
       setResumeErr("Only pdf supported");
+    }
+    
     else {
       setResumeErr("");
     }
@@ -34,43 +41,48 @@ const Name = () => {
 
   // const     sampleRegExMail =  new RegExp('^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$');
 
-  
-
   return (
     <div className="container">
       <div className="sub-container">
         <div className="field-heading">SUBMIT YOUR APPLICATION</div>
 
-        <form onSubmit={handleSubmit(async (data) => {
-          console.log(JSON.stringify(data))
-        await addDoc(collection(db, "test"), {
-          "test": JSON.stringify(data),    
-        }); 
+        <form
+          onSubmit={handleSubmit(async (data) => {
+            console.log("formclg", data);
+            await addDoc(collection(db, "test"), {
+              test: JSON.stringify(data),
+            });
 
-        await getDocs(collection(db, "test"))
-            .then((querySnapshot)=>{               
-                const newData = querySnapshot.docs
-                    .map((doc) => ({...doc.data(), id:doc.id }));            
-                console.log(newData);
-            })
-        })}>
+            // await getDocs(collection(db, "test"))
+            //     .then((querySnapshot)=>{
+            //         const newData = querySnapshot.docs
+            //             .map((doc) => ({...doc.data(), id:doc.id }));
+            //         console.log(newData);
+            //     })
+          })}
+        >
           <div className="field-input">
             <div className="fieldName">
               Resume/CV <span style={{ color: "red" }}>*</span>
             </div>
             <div className="field-input-box">
-              <button id="resBtn">
-                <input
-                  id="inputBtn"
-                  style={{ cursor: "pointer" }}
-                  required
-                  {...register("Resume")}
-                  type="file"
-                  onChange={resChange}
-                />
-                <i className="fa-solid fa-paperclip"></i> &nbsp;ATTACH RESUME /
-                CV
+              <button id="resBtn" onChange={resChange}>
+                <i className="fa-solid fa-paperclip"></i>&nbsp;
+                {resumeLabel}
               </button>
+
+              <input
+                id="inputBtn"
+                style={{ cursor: "pointer" }}
+               required
+                {...register("Resume" , {
+
+                })}
+                type="file"
+                onChange={resChange}
+              />
+              {/* <label id="label" > <i className="fa-solid fa-paperclip"></i> &nbsp;ATTACH RESUME /
+                CV</label> */}
 
               <p>{resumeErr}</p>
             </div>
@@ -113,7 +125,9 @@ const Name = () => {
                       className="text-box"
                       placeholder={item.placeholder}
                     />
-                    {errors[item.label] && <p>{String(errors[item.label]?.message)}</p>}
+                    {errors[item.label] && (
+                      <p>{String(errors[item.label]?.message)}</p>
+                    )}
                   </div>
                 </div>
               </>
@@ -138,7 +152,9 @@ const Name = () => {
                       placeholder={item.placeholder}
                       required={item.required}
                     />
-                    {errors[item.label] && <p>{String(errors[item.label]?.message)}</p>}
+                    {errors[item.label] && (
+                      <p>{String(errors[item.label]?.message)}</p>
+                    )}
                   </div>
                 </div>
               </>
@@ -185,14 +201,16 @@ const Name = () => {
                         placeholder={item.placeholder}
                         required={item.required}
                       />
-                      <p>{String(errors[item.name] && errors[item.name]?.message)}</p>
+                      {errors[item.name] && (
+                        <p>{String(errors[item.name]?.message)}</p>
+                      )}
                     </div>
                   </div>
                 </>
               );
             })}
           </div>
-          <Selection register={register} />
+          <Selection register={register} err={errors} />
         </form>
       </div>
     </div>

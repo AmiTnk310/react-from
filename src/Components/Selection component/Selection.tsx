@@ -2,29 +2,27 @@ import React from "react";
 import "./Selection.css";
 import { selectionList } from "../../Details";
 import { useState } from "react";
-import { FieldValues, useForm, UseFormRegister } from "react-hook-form";
+import { FieldValues,FieldErrorsImpl, useForm, UseFormRegister } from "react-hook-form";
 import { urlToHttpOptions } from "url";
 import { validateHeaderValue } from "http";
 
 interface IProps {
   register: UseFormRegister<FieldValues>;
+  err:Partial<FieldErrorsImpl<{[x: string]: any;}>>
+
 }
 
+const Selection = ({ register,err }: IProps) => {
+ 
 
-const Selection = ({ register }: IProps) => { 
-  // const {handleSubmit, formState:{errors}} = useForm();
-  
-    // console.log("selectionErrors", errors);
-  
+  // "saaa",ionErrors", errors);
+
   const [details, setDetails] = useState(false);
   const showDetails = () => {
     // alert("sahh")
     setDetails(!details);
   };
 
-
-  
- 
   return (
     <div>
       <div className="container-selection">
@@ -48,8 +46,10 @@ const Selection = ({ register }: IProps) => {
               no effect on your opportunity for employment.
             </div>
             <div id="selection-form">
-              {/* <form onSubmit={handleSubmit((data) => console.log(data))}> */}
               {selectionList.map((item, pos) => {
+                {
+                  /* <form onSubmit={handleSubmit((data) => "saaa",> */
+                }
                 return (
                   <>
                     <div className="selectMenu">
@@ -60,19 +60,35 @@ const Selection = ({ register }: IProps) => {
                         {item.label}
                       </div>
                       <div className="select-option">
-                        <select  
-                          
-                          required
-                          name={item.name}
-                            // onChange={(e) =>}
-                        >
-                          
-                          {item.options.map((items,pos) => {
-                            return <option {...register(item.label)} key={pos} value={items}>{items}</option>;
+                        <select
+                          {...register(item.name, {
+                            required: {
+                              value: item.required,
+                              message: " *Select any one field",
+                            },
                           })}
+                        >
+                          <option value="">Select...</option>
+                          {item.options.map((items, pos) => {
+                            return (
+                              <option key={pos} value={items}>
+                                {items}
+                                
+                              </option>
+                             
+                              
+                            );
+                            
+                          }
+                          )
+                          }
+                            
+                          
+                          
                         </select>
-                        {/* {errors[item.label] && <p>{errors[item.label]?.message}</p>} */}
-                        
+                        {err[item.name] && (<p>{String(err[item.name]?.message)}</p>)}
+                    
+
                       </div>
                     </div>
 

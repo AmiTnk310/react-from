@@ -1,9 +1,4 @@
-// const [details,setDetails]=useState(false);
-const showDetails = () => {
-  alert("sahh");
-  // setDetails(!details)
-};
-const regEx = "^[a-z0-9._%+-]+@[a-z0-9-]+.[a-z]{2,4}$";
+
 
 interface Fields {
   placeholder: string;
@@ -36,6 +31,7 @@ interface SelectionList {
   name: string;
   options: string[];
   required?: boolean;
+
 }
 
 export const fields: Fields[] = [
@@ -93,7 +89,7 @@ export const linksField: Fields[] = [
     label: "LinkedIn URL",
     required: false,
     pattern:
-      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+      /(^((https?:\/\/)?((www|\w\w)\.)?)linkedin\.com\/)((([\w]{2,3})?)|([^\/]+\/(([\w|\d-&#?=])+\/?){1,}))$/,
     // maxLen : 5
   },
   {
@@ -102,7 +98,7 @@ export const linksField: Fields[] = [
     label: "Twitter URL",
     required: false,
     pattern:
-      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+      /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/,
     // maxLen : 5
   },
   {
@@ -111,7 +107,7 @@ export const linksField: Fields[] = [
     label: "GitHub URL",
     required: false,
     pattern:
-      /^(http(s)?:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+      /^(http(s?):\/\/)?(www\.)?github\.([a-z])+\/([A-Za-z0-9]{1,})+\/?$/,     
     // maxLen : 5
   },
   {
@@ -158,8 +154,9 @@ export const selectionList: SelectionList[] = [
   {
     name: "gender",
     label: "Gender",
-    options: ["Select...", "Male", "Female", "Other"],
+    options: [ "Male", "Female", "Other"],
     required: true,
+   
   },
   {
     name: "race",
@@ -197,17 +194,21 @@ export const selectionList: SelectionList[] = [
     label: "Race",
     // onclick:{showDetails},
 
-    options: ["Select...", "1", "2", "3", "4", "5", "6", "7", "8"],
+    options: [ "1", "2", "3", "4", "5", "6", "7", "8"],
+    required: true,
+   
   },
   {
     name: "status",
 
     label: "Veteran Status",
     options: [
-      "Select...",
+      
       "I am a veteran",
       "I am not a veteran",
       "Decline to self-identity",
     ],
+    required: true,
+   
   },
 ];

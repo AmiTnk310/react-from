@@ -5,10 +5,11 @@ import img from "../image/renderLogo.png"
 const Header =()=>{
     return(
         <div className="container-header">
-        <div className="sub-container-header">
-                <div className="logo">
+            <div className="logo">
                     <img src={img} alt="" />
                 </div>
+        <div className="sub-container-header">
+              <div id="empty"></div>
                 <div className="heading">
                   <div className="main-heading">
                            <span id="main-heading"> Full-Stack Engineer</span>

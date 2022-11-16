@@ -37,18 +37,25 @@
         width: 230px;
         height: 45px;
         border: none;
+        
+        
         font-size: 1rem;
         text-align: start;
         color: rgb(33, 30, 30);
         border-radius: 4px;
+        /* color: transparent; */
+        position:absolute ;
     }
     #inputBtn{
-        /* background-color: aqua; */
-        width: auto;
-        height: auto;
+        /* background-color: aqua;  */
+        width: 230px;
+        height: 45px;
         color: transparent;
-        position:absolute;
+        position:relative;
     }
+
+  
+
     #inputBtn::-webkit-file-upload-button{
         display: none;
     }
