@@ -12,7 +12,6 @@ import Selection from "../Selection component/Selection";
 import { kMaxLength } from "buffer";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
-// import { getStorage, ref, uploadBytes } from "firebase/storage";
 import {
   getStorage,
   ref,
@@ -21,7 +20,7 @@ import {
 } from "firebase/storage";
 
 const Name = () => {
-  const [snackMsg,setSnackMsg] = useState<boolean>(false)
+  const [snackMsg, setSnackMsg] = useState<boolean>(false);
 
   const [resumeErr, setResumeErr] = useState("");
   const [resumeLabel, setResumeLabel] = useState("Attach RESUME/CV");
@@ -34,7 +33,7 @@ const Name = () => {
     const storage = getStorage();
     const storageRef = ref(storage, `/Resume/${resumeLabel}`);
 
-    console.log("fileName -> cloud ", file);
+    // console.log("fileName -> cloud ", file);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     if (file != undefined) {
@@ -59,40 +58,32 @@ const Name = () => {
             case "storage/unauthorized":
               break;
             case "storage/canceled":
-           
               break;
             case "storage/unknown":
-            
               break;
           }
         },
         () => {
-        
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log("File available at", downloadURL);
+            // console.log("File available at", downloadURL);
             data.Resume = downloadURL;
             addDoc(collection(db, "test1"), data)
               .then(() => {
-                setSnackMsg(true)
-                setTimeout(function(){
-                  setSnackMsg(true)
-                  console.log("showsnack2", snackMsg)
-                 }, 1000);
-                 console.log("showsnack", snackMsg)
-                }
-              )
-              
+                setSnackMsg(true);
+                setTimeout(function () {
+                  setSnackMsg(true);
+                  // console.log("showsnack2", snackMsg);
+                }, 1000);
+                // console.log("showsnack", snackMsg);
+              })
+
               .catch((E) => console.log("OOPSY", E));
-              
           });
-        
         }
       );
     }
   };
 
-  // const storage = getStorage();
-  // const storageRef = ref(storage, 'test1');
 
   const resChange = (e: any) => {
     if (e.currentTarget.files && e.currentTarget.files[0]) {
@@ -116,8 +107,6 @@ const Name = () => {
   {
     console.log("errors", errors);
   }
-
-  // const     sampleRegExMail =  new RegExp('^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,4}$');
 
   return (
     <div className="container">
@@ -183,8 +172,7 @@ const Name = () => {
                 type="file"
                 onChange={resChange}
               />
-              {/* <label id="label" > <i className="fa-solid fa-paperclip"></i> &nbsp;ATTACH RESUME /
-                CV</label> */}
+             
 
               <p>{resumeErr}</p>
             </div>
@@ -210,10 +198,7 @@ const Name = () => {
                           value: item.required,
                           message: "Please fill this input",
                         },
-                        //   fileSize:{
-                        //     value:item.maxFileSize,
-                        //     message:'cxc'
-                        // },
+                      
                         minLength: {
                           value: item.min ?? 0,
                           message: "Name should be of more than 10 words",
@@ -271,7 +256,6 @@ const Name = () => {
                     <div className="fieldName-addInfo">{item.label}</div>
                     <div className="field-input-box-pronoun">
                       <input
-                        // {...register(item.name ?? '')} if property in interface is optional
                         {...register(item.name)}
                         type={item.type}
                         className="text-box-pronoun"
@@ -298,7 +282,6 @@ const Name = () => {
                             message: "min 30 characters",
                           },
                         })}
-                        // type={item.type}
                         className="text-box-addInfo"
                         placeholder={item.placeholder}
                         required={item.required}
@@ -314,7 +297,7 @@ const Name = () => {
           </div>
           <Selection register={register} err={errors} />
         </form>
-        {snackMsg && <Snackbar/>}
+        {snackMsg && <Snackbar />}
       </div>
     </div>
   );

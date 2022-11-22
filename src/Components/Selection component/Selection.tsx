@@ -17,19 +17,13 @@ const Selection = ({ register,err }: IProps) => {
   const reload =()=>{
     window.location.reload();
   }
-  // "saaa",ionErrors", errors);
+  
 
   const [details, setDetails] = useState(false);
   const showDetails = () => {
-    // alert("sahh")
     setDetails(!details);
   };
 
-  // const snackBar =()=>{
-  //   var x = document.getElementById("snackbar");
-  //   x.className = "show";
-  //   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-  // }
 
   return (
     <div>
@@ -55,9 +49,7 @@ const Selection = ({ register,err }: IProps) => {
             </div>
             <div id="selection-form">
               {selectionList.map((item, pos) => {
-                {
-                  /* <form onSubmit={handleSubmit((data) => "saaa",> */
-                }
+               
                 return (
                   <>
                     <div className="selectMenu">
