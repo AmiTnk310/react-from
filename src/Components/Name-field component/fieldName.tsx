@@ -20,6 +20,7 @@ import {
 } from "firebase/storage";
 
 const Name = () => {
+  
   const [resumeErr, setResumeErr] = useState("");
   const [resumeLabel, setResumeLabel] = useState("Attach RESUME/CV");
   const [file, setFile] = useState<File>();
