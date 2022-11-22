@@ -46,10 +46,10 @@ const Name = () => {
           console.log("Upload is " + progress + "% done");
           switch (snapshot.state) {
             case "paused":
-              console.log("Upload is paused");
+              // console.log("Upload is paused");
               break;
             case "running":
-              console.log("Upload is running");
+              // console.log("Upload is running");
               break;
           }
         },
@@ -105,7 +105,7 @@ const Name = () => {
     formState: { errors },
   } = useForm();
   {
-    console.log("errors", errors);
+    // console.log("errors", errors);
   }
 
   return (
@@ -146,10 +146,10 @@ const Name = () => {
                     },
                   })
                   .then((response) => {
-                    console.log(response, "posted");
+                    // console.log(response, "posted");
                   })
                   .catch((e) => {
-                    console.log("error", e);
+                    // console.log("error", e);
                   });
               });
           })}
