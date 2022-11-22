@@ -1,8 +1,8 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FieldValue, FieldValues, useForm } from "react-hook-form";
 import { useState } from "react";
 import "./Name-field.css";
-
+import axios from "axios";
 import { fields } from "../../Details";
 import { linksField } from "../../Details";
 import { pronouns } from "../../Details";
@@ -11,21 +11,87 @@ import Selection from "../Selection component/Selection";
 import { kMaxLength } from "buffer";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+// import { getStorage, ref, uploadBytes } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
 const Name = () => {
   const [resumeErr, setResumeErr] = useState("");
   const [resumeLabel, setResumeLabel] = useState("Attach RESUME/CV");
+  const [file, setFile] = useState<File>();
+
+  const [error, setError] = useState(null);
+  const [test, setTest] = useState([]);
+
+  const dataAppend = (data: FieldValues) => {
+    const storage = getStorage();
+    const storageRef = ref(storage, `/Resume/${resumeLabel}`);
+
+    console.log("fileName -> cloud ", file);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    if (file != undefined) {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            Number(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          switch (error.code) {
+            case "storage/unauthorized":
+              break;
+            case "storage/canceled":
+              // User canceled the upload
+              break;
+            // ...
+            case "storage/unknown":
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            data.Resume = downloadURL;
+            addDoc(collection(db, "test1"), data)
+              .then(() => "success")
+              .catch((E) => console.log("OOPSY", E));
+          });
+        }
+      );
+    }
+  };
+
+  // const storage = getStorage();
+  // const storageRef = ref(storage, 'test1');
 
   const resChange = (e: any) => {
-     if (e.currentTarget.files && e.currentTarget.files[0]){
-      setResumeLabel(e.currentTarget.files[0].name)}
-     if (e.target.files[0].size > 5000000) {
+    if (e.currentTarget.files && e.currentTarget.files[0]) {
+      setFile(e.currentTarget.files[0]);
+      setResumeLabel(e.currentTarget.files[0].name);
+    }
+    if (e.target.files[0].size > 5000000) {
       setResumeErr("File size should be less than 5Mb");
-    }
-     else if (e.target.files[0].type !== "application/pdf"){
+    } else if (e.target.files[0].type !== "application/pdf") {
       setResumeErr("Only pdf supported");
-    }
-    
-    else {
+    } else {
       setResumeErr("");
     }
   };
@@ -48,17 +114,43 @@ const Name = () => {
 
         <form
           onSubmit={handleSubmit(async (data) => {
-            console.log("formclg", data);
-            await addDoc(collection(db, "test"), {
-              test: JSON.stringify(data),
-            });
+            dataAppend(data);
 
-            // await getDocs(collection(db, "test"))
-            //     .then((querySnapshot)=>{
-            //         const newData = querySnapshot.docs
-            //             .map((doc) => ({...doc.data(), id:doc.id }));
-            //         console.log(newData);
-            //     })
+            let formData = new FormData();
+            formData.append("files", file);
+
+            axios
+              .post("http://localhost:1337/api/upload", formData)
+              .then((response) => {
+                const fileId = response.data[0];
+
+                axios
+                  .post("http://localhost:1337/api/test1s", {
+                    data: {
+                      fullName: `${data["Full Name"]}`,
+                      email: `${data.Email}`,
+                      phone: data.Phone,
+                      currentCompany: `${data["Current Company"]}`,
+                      Linkedin: `${data["LinkedIn URL"]}`,
+                      twitter: `${data["Twitter URL"]}`,
+                      github: `${data["GitHub URL"]}`,
+                      portfolio: `${data["Portfolio URL"]}`,
+                      website: `${data["Other Website"]}`,
+                      pronoun: data.pronouns,
+                      additionalInfo: `${data["additional info"]}`,
+                      gender: data.gender,
+                      race: data.race,
+                      vetStatus: data.status,
+                      resume: fileId,
+                    },
+                  })
+                  .then((response) => {
+                    console.log(response, "posted");
+                  })
+                  .catch((e) => {
+                    console.log("error", e);
+                  });
+              });
           })}
         >
           <div className="field-input">
@@ -74,10 +166,8 @@ const Name = () => {
               <input
                 id="inputBtn"
                 style={{ cursor: "pointer" }}
-               required
-                {...register("Resume" , {
-
-                })}
+                required
+                {...register("Resume", {})}
                 type="file"
                 onChange={resChange}
               />

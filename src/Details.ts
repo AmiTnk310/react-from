@@ -50,8 +50,8 @@ export const fields: Fields[] = [
     type: "text",
     label: "Full Name",
     required: true,
-    min: 11,
-    message: "it require more than 10 letters",
+    min: 3,
+    message: "it require more than 3 letters",
   },
   {
     placeholder: "Email",

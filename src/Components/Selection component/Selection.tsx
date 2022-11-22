@@ -14,7 +14,9 @@ interface IProps {
 
 const Selection = ({ register,err }: IProps) => {
  
-
+  const reload =()=>{
+    window.location.reload();
+  }
   // "saaa",ionErrors", errors);
 
   const [details, setDetails] = useState(false);
@@ -22,6 +24,12 @@ const Selection = ({ register,err }: IProps) => {
     // alert("sahh")
     setDetails(!details);
   };
+
+  const snackBar=()=> {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
+  }
 
   return (
     <div>
@@ -104,14 +112,16 @@ const Selection = ({ register,err }: IProps) => {
                   </>
                 );
               })}
-              <div className="submit-btn">
-                <button type="submit">SUBMIT APPLICATION</button>
+              <div className="submit-btn" onClick={snackBar}>
+                <button type="submit">SUBMIT APPLICATION </button>
+                
               </div>
               {/* </form> */}
             </div>
           </div>
           <div className="captcha"></div>
         </div>
+        <div id="snackbar">Form Data Submitted.</div>
       </div>
     </div>
   );
