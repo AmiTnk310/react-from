@@ -1,12 +1,10 @@
 import React from 'react'
 import "./snackBar.css"
-interface IProps{
-    message:string
-}
-const Snackbar = ({message}:IProps) => {
+
+const Snackbar = () => {
     return(
         <div className='snack'>
-            {message}
+            <p>Data sent succesfully!</p>
         </div>
     )
 }

@@ -25,11 +25,11 @@ const Selection = ({ register,err }: IProps) => {
     setDetails(!details);
   };
 
-  const snackBar =()=>{
-    var x = document.getElementById("snackbar");
-    x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-  }
+  // const snackBar =()=>{
+  //   var x = document.getElementById("snackbar");
+  //   x.className = "show";
+  //   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  // }
 
   return (
     <div>
@@ -63,7 +63,7 @@ const Selection = ({ register,err }: IProps) => {
                     <div className="selectMenu">
                       <div
                         className="select-label"
-                        onClick={item.name === "race" ? showDetails : () => {}}
+                        onClick={item.name === "race" ? showDetails: () => {}}
                       >
                         {item.label}
                       </div>
@@ -112,7 +112,7 @@ const Selection = ({ register,err }: IProps) => {
                   </>
                 );
               })}
-              <div className="submit-btn" onClick={snackBar}>
+              <div className="submit-btn" >
                 <button type="submit">SUBMIT APPLICATION </button>
                 
               </div>

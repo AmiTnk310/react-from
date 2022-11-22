@@ -2,6 +2,7 @@ import React from "react";
 import { FieldValue, FieldValues, useForm } from "react-hook-form";
 import { useState } from "react";
 import "./Name-field.css";
+import Snackbar from "../snackbar/snackbar";
 import axios from "axios";
 import { fields } from "../../Details";
 import { linksField } from "../../Details";
@@ -20,7 +21,8 @@ import {
 } from "firebase/storage";
 
 const Name = () => {
-  
+  const [snackMsg,setSnackMsg] = useState<boolean>(false)
+
   const [resumeErr, setResumeErr] = useState("");
   const [resumeLabel, setResumeLabel] = useState("Attach RESUME/CV");
   const [file, setFile] = useState<File>();
@@ -57,24 +59,33 @@ const Name = () => {
             case "storage/unauthorized":
               break;
             case "storage/canceled":
-              // User canceled the upload
+           
               break;
-            // ...
             case "storage/unknown":
-              // Unknown error occurred, inspect error.serverResponse
+            
               break;
           }
         },
         () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
             data.Resume = downloadURL;
             addDoc(collection(db, "test1"), data)
-              .then(() => "success")
+              .then(() => {
+                setSnackMsg(true)
+                setTimeout(function(){
+                  setSnackMsg(true)
+                  console.log("showsnack2", snackMsg)
+                 }, 1000);
+                 console.log("showsnack", snackMsg)
+                }
+              )
+              
               .catch((E) => console.log("OOPSY", E));
+              
           });
+        
         }
       );
     }
@@ -303,6 +314,7 @@ const Name = () => {
           </div>
           <Selection register={register} err={errors} />
         </form>
+        {snackMsg && <Snackbar/>}
       </div>
     </div>
   );
